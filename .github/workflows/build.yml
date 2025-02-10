@@ -1,4 +1,4 @@
-﻿﻿name: Build and Deploy the Project v2
+﻿﻿name: Build and Deploy the Project
 
 on:
   push:
@@ -15,12 +15,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: Install .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet: "8.0.x"
-    
+          dotnet-version: "8.0.x"
+
       - name: Build project
         run: dotnet build
 
@@ -33,25 +33,3 @@ jobs:
           app-name: data-trust-app
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish
-
-    # steps:
-    #   - name: Checkout code
-    #     uses: actions/checkout@v2
-
-    #   - name: Install .NET SDK
-    #     uses: actions/setup-dotnet@v3
-    #     with:
-    #       dotnet-version: "8.0.x"
-
-    #   - name: Build project
-    #     run: dotnet build
-
-    #   - name: Publish project
-    #     run: dotnet publish --configuration Release --output ./publish
-
-    #   - name: Deploy to Azure Web App
-    #     uses: azure/webapps-deploy@v2
-    #     with:
-    #       app-name: data-trust-app
-    #       publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-    #       package: ./publish
