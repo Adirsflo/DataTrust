@@ -1,3 +1,4 @@
+using Azure.Identity;
 using DataTrust.Data;
 using DataTrust.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -87,7 +88,13 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var keyVaultUri = new Uri("https://data-trust-kv.vault.azure.net/");
+builder.Configuration.AddAzureKeyVault(keyVaultUri, new DefaultAzureCredential());
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration["DefaultConnection"]));
+
+builder.Services.AddApplicationInsightsTelemetry();
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
